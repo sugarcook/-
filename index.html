@@ -16,7 +16,7 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  background:transparent;
+  background:#f0f0f0;
   font-family:Montserrat,sans-serif;
 }
 .card{
@@ -34,8 +34,6 @@ body{
   position:relative;
   overflow:hidden;
 }
-
-/* 飛行機＋軌跡 SVG を絶対配置 */
 .plane-bg{
   position:absolute;
   inset:0;
@@ -43,8 +41,6 @@ body{
   height:100%;
   pointer-events:none;
 }
-
-/* テキスト */
 .month-year{
   font-size:14px;
   letter-spacing:2px;
@@ -73,66 +69,62 @@ body{
 </head>
 <body>
 <div class="card">
-  <!-- 飛行機SVGを直接インライン埋め込み -->
   <svg class="plane-bg" viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
-    <!-- 軌跡の点線 -->
-    <path d="M10 160 Q80 120 180 55"
-          stroke="#ffb7c5" stroke-width="2.5" fill="none"
-          stroke-linecap="round" stroke-dasharray="6 10" opacity="0.7"/>
 
-    <!-- 飛行機シルエット（右上に傾いて飛んでいる） -->
-    <!-- transform: 右上あたりに配置して約-35度傾ける -->
-    <g transform="translate(185, 48) rotate(-35)" opacity="0.35">
+    <!-- 軌跡の点線：左下→右上 -->
+    <path d="M15 175 Q90 130 200 45"
+          stroke="#ffb7c5" stroke-width="2" fill="none"
+          stroke-linecap="round" stroke-dasharray="6 10" opacity="0.8"/>
+
+    <!-- ✈ 飛行機シルエット（右上・大きめ・濃いめ） -->
+    <!-- 右上コーナー付近 transform で配置 & 傾け -->
+    <g transform="translate(205, 38) rotate(-40) scale(1.5)" opacity="0.55">
       <!-- 胴体 -->
-      <ellipse cx="0" cy="0" rx="22" ry="5.5" fill="#ff8fa3"/>
-      <!-- 主翼 -->
-      <path d="M-4 -1 L-14 -16 L-2 -12 L4 -1 Z" fill="#ff8fa3"/>
-      <path d="M-4 1 L-14 16 L-2 12 L4 1 Z" fill="#ff8fa3"/>
-      <!-- 尾翼（垂直） -->
-      <path d="M-19 -1 L-24 -9 L-16 -6 Z" fill="#ff8fa3"/>
-      <!-- 尾翼（水平） -->
-      <path d="M-18 -1 L-25 -5 L-22 -1 L-25 5 L-18 1 Z" fill="#ff8fa3"/>
+      <ellipse cx="0" cy="0" rx="20" ry="5" fill="#e8607a"/>
+      <!-- 主翼（左右） -->
+      <path d="M-2 -1 L-12 -18 L2 -11 L5 -1 Z" fill="#e8607a"/>
+      <path d="M-2  1 L-12  18 L2  11 L5  1 Z" fill="#e8607a"/>
+      <!-- 水平尾翼 -->
+      <path d="M-16 -1 L-22 -8 L-18 -5 L-15 -1 Z" fill="#e8607a"/>
+      <path d="M-16  1 L-22  8 L-18  5 L-15  1 Z" fill="#e8607a"/>
+      <!-- 垂直尾翼 -->
+      <path d="M-16 0 L-23 -9 L-17 -3 Z" fill="#e8607a"/>
       <!-- 機首 -->
-      <ellipse cx="20" cy="0" rx="4" ry="3" fill="#ff8fa3"/>
+      <ellipse cx="19" cy="0" rx="4" ry="3" fill="#e8607a"/>
     </g>
 
-    <!-- 小さな雲1 -->
-    <g opacity="0.25" transform="translate(30,40)">
-      <circle cx="0" cy="0" r="8" fill="#ffb7c5"/>
-      <circle cx="10" cy="-4" r="10" fill="#ffb7c5"/>
-      <circle cx="22" cy="0" r="8" fill="#ffb7c5"/>
-      <rect x="-1" y="0" width="24" height="8" fill="#ffb7c5"/>
+    <!-- 小さな雲（左上） -->
+    <g opacity="0.3" transform="translate(18, 30)">
+      <circle cx="0"  cy="6"  r="7"  fill="#ffb7c5"/>
+      <circle cx="9"  cy="2"  r="9"  fill="#ffb7c5"/>
+      <circle cx="20" cy="5"  r="7"  fill="#ffb7c5"/>
+      <rect   x="-1" y="6"  width="22" height="8" fill="#ffb7c5"/>
     </g>
 
-    <!-- 小さな雲2 -->
-    <g opacity="0.18" transform="translate(200,140)">
-      <circle cx="0" cy="0" r="6" fill="#ffb7c5"/>
-      <circle cx="8" cy="-3" r="8" fill="#ffb7c5"/>
-      <circle cx="17" cy="0" r="6" fill="#ffb7c5"/>
-      <rect x="-1" y="0" width="19" height="6" fill="#ffb7c5"/>
+    <!-- 小さな雲（右下） -->
+    <g opacity="0.2" transform="translate(190, 155)">
+      <circle cx="0"  cy="5" r="5"  fill="#ffb7c5"/>
+      <circle cx="7"  cy="2" r="7"  fill="#ffb7c5"/>
+      <circle cx="16" cy="5" r="5"  fill="#ffb7c5"/>
+      <rect   x="-1" y="5" width="18" height="6" fill="#ffb7c5"/>
     </g>
   </svg>
 
   <div id="m-y" class="month-year"></div>
-  <div id="d" class="day"></div>
-  <div id="w" class="weekday"></div>
+  <div id="d"   class="day"></div>
+  <div id="w"   class="weekday"></div>
 </div>
 
 <script>
 function update(){
   const n = new Date();
-  const months = [
-    'January','February','March','April','May','June',
-    'July','August','September','October','November','December'
-  ];
-  const weeks = [
-    'SUNDAY','MONDAY','TUESDAY','WEDNESDAY',
-    'THURSDAY','FRIDAY','SATURDAY'
-  ];
-  document.getElementById("m-y").innerText =
-    months[n.getMonth()] + " " + n.getFullYear();
-  document.getElementById("d").innerText = n.getDate();
-  document.getElementById("w").innerText = weeks[n.getDay()];
+  const months = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+  const weeks  = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY',
+                  'THURSDAY','FRIDAY','SATURDAY'];
+  document.getElementById("m-y").innerText = months[n.getMonth()]+" "+n.getFullYear();
+  document.getElementById("d").innerText   = n.getDate();
+  document.getElementById("w").innerText   = weeks[n.getDay()];
 }
 update();
 setInterval(update, 60000);
