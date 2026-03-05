@@ -3,112 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --main-pink: #ffb7c5;    /* サクラピンク */
-    --accent-pink: #ff8fa3;  /* アクセント */
-    --text-color: #5d5d5d;   /* 落ち着いたグレー */
-    --bg-grad: linear-gradient(135deg, #fff5f7 0%, #ffe4e1 100%);
-  }
+:root{
+  --pink:#ffb7c5;
+  --pink2:#ff8fa3;
+  --text:#555;
+}
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:transparent;
+  font-family:Montserrat,sans-serif;
+}
+.card{
+  width:260px;
+  height:200px;
+  border-radius:35px;
+  background:linear-gradient(135deg,#fff5f7,#ffe4e1);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  box-shadow:
+    20px 20px 60px #e6d5d8,
+    -20px -20px 60px #ffffff;
+  position:relative;
+  overflow:hidden;
+}
 
-  body {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: transparent;
-    font-family: 'Pinyon Script', cursive; /* 筆記体フォントを適用 */
-  }
+/* 飛行機＋軌跡 SVG を絶対配置 */
+.plane-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
 
-  /* カード本体：立体感と背景デザイン */
-  .card {
-    background: var(--bg-grad);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 40px;
-    padding: 35px 45px;
-    text-align: center;
-    box-shadow: 
-      20px 20px 60px #e6d5d8, 
-      -20px -20px 60px #ffffff; /* ニューモーフィズム風の柔らかい影 */
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* 背景の飛行機と飛行機雲（白色のシルエット） */
-  .card::before {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    right: -10px;
-    width: 150px;
-    height: 150px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M90 40 L70 45 L50 20 L40 25 L55 48 L20 55 L10 45 L5 50 L15 60 L10 70 L20 65 L40 70 L50 65 L85 75 Z" fill="white" opacity="0.4"/></svg>'),
-                      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10 50 Q 50 20, 90 50" stroke="white" stroke-width="2" fill="none" opacity="0.4"/></svg>');
-    background-size: 80% 80%, 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center bottom, center top;
-    transform: rotate(-15deg);
-    pointer-events: none; /* テキストの選択を邪魔しない */
-  }
-
-  /* テキスト全体の配置調整 */
-  .text-container {
-    position: relative;
-    z-index: 1; /* 背景デザインより前に配置 */
-  }
-
-  .month-year {
-    color: var(--accent-pink);
-    font-size: 1.2rem; /* フォントに合わせて少し大きく */
-    font-weight: 400; /* 筆記体の細さを活かす */
-    letter-spacing: 0.1em;
-    margin-bottom: 5px;
-  }
-
-  .day {
-    color: var(--text-color);
-    font-size: 6rem; /* さらに大きく */
-    font-weight: 400; /* 筆記体は太くしない */
-    line-height: 1;
-    margin: 10px 0;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
-  }
-
-  .weekday {
-    color: #ffffff;
-    background: var(--main-pink);
-    padding: 8px 25px; /* 余白を少し広く */
-    border-radius: 100px;
-    font-size: 1.1rem; /* 少し大きく */
-    font-weight: 400;
-    display: inline-block;
-    box-shadow: 0 4px 10px rgba(255, 183, 197, 0.4);
-  }
+/* テキスト */
+.month-year{
+  font-size:14px;
+  letter-spacing:2px;
+  color:var(--pink2);
+  font-weight:600;
+  position:relative;
+}
+.day{
+  font-family:"Great Vibes",cursive;
+  font-size:70px;
+  color:var(--text);
+  line-height:1;
+  margin:8px 0;
+  position:relative;
+}
+.weekday{
+  background:var(--pink);
+  color:white;
+  padding:6px 18px;
+  border-radius:100px;
+  font-size:13px;
+  box-shadow:0 4px 10px rgba(255,183,197,.4);
+  position:relative;
+}
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="text-container">
-      <div id="m-y" class="month-year"></div>
-      <div id="d" class="day"></div>
-      <div id="w" class="weekday"></div>
-    </div>
-  </div>
+<div class="card">
+  <!-- 飛行機SVGを直接インライン埋め込み -->
+  <svg class="plane-bg" viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- 軌跡の点線 -->
+    <path d="M10 160 Q80 120 180 55"
+          stroke="#ffb7c5" stroke-width="2.5" fill="none"
+          stroke-linecap="round" stroke-dasharray="6 10" opacity="0.7"/>
 
-  <script>
-    function update() {
-      const n = new Date();
-      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      const weeks = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-      
-      document.getElementById('m-y').innerText = `${months[n.getMonth()]} ${n.getFullYear()}`; // 大文字化はやめて筆記体の美しさを優先
-      document.getElementById('d').innerText = n.getDate();
-      document.getElementById('w').innerText = weeks[n.getDay()];
-    }
-    update();
-    setInterval(update, 60000); // 1分ごとに更新
-  </script>
+    <!-- 飛行機シルエット（右上に傾いて飛んでいる） -->
+    <!-- transform: 右上あたりに配置して約-35度傾ける -->
+    <g transform="translate(185, 48) rotate(-35)" opacity="0.35">
+      <!-- 胴体 -->
+      <ellipse cx="0" cy="0" rx="22" ry="5.5" fill="#ff8fa3"/>
+      <!-- 主翼 -->
+      <path d="M-4 -1 L-14 -16 L-2 -12 L4 -1 Z" fill="#ff8fa3"/>
+      <path d="M-4 1 L-14 16 L-2 12 L4 1 Z" fill="#ff8fa3"/>
+      <!-- 尾翼（垂直） -->
+      <path d="M-19 -1 L-24 -9 L-16 -6 Z" fill="#ff8fa3"/>
+      <!-- 尾翼（水平） -->
+      <path d="M-18 -1 L-25 -5 L-22 -1 L-25 5 L-18 1 Z" fill="#ff8fa3"/>
+      <!-- 機首 -->
+      <ellipse cx="20" cy="0" rx="4" ry="3" fill="#ff8fa3"/>
+    </g>
+
+    <!-- 小さな雲1 -->
+    <g opacity="0.25" transform="translate(30,40)">
+      <circle cx="0" cy="0" r="8" fill="#ffb7c5"/>
+      <circle cx="10" cy="-4" r="10" fill="#ffb7c5"/>
+      <circle cx="22" cy="0" r="8" fill="#ffb7c5"/>
+      <rect x="-1" y="0" width="24" height="8" fill="#ffb7c5"/>
+    </g>
+
+    <!-- 小さな雲2 -->
+    <g opacity="0.18" transform="translate(200,140)">
+      <circle cx="0" cy="0" r="6" fill="#ffb7c5"/>
+      <circle cx="8" cy="-3" r="8" fill="#ffb7c5"/>
+      <circle cx="17" cy="0" r="6" fill="#ffb7c5"/>
+      <rect x="-1" y="0" width="19" height="6" fill="#ffb7c5"/>
+    </g>
+  </svg>
+
+  <div id="m-y" class="month-year"></div>
+  <div id="d" class="day"></div>
+  <div id="w" class="weekday"></div>
+</div>
+
+<script>
+function update(){
+  const n = new Date();
+  const months = [
+    'January','February','March','April','May','June',
+    'July','August','September','October','November','December'
+  ];
+  const weeks = [
+    'SUNDAY','MONDAY','TUESDAY','WEDNESDAY',
+    'THURSDAY','FRIDAY','SATURDAY'
+  ];
+  document.getElementById("m-y").innerText =
+    months[n.getMonth()] + " " + n.getFullYear();
+  document.getElementById("d").innerText = n.getDate();
+  document.getElementById("w").innerText = weeks[n.getDay()];
+}
+update();
+setInterval(update, 60000);
+</script>
 </body>
 </html>
