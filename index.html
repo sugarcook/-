@@ -1,73 +1,103 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
+  :root {
+    --main-pink: #ffb7c5;    /* サクラピンク */
+    --accent-pink: #ff8fa3;  /* アクセント */
+    --text-color: #5d5d5d;   /* 落ち着いたグレー */
+    --bg-grad: linear-gradient(135deg, #fff5f7 0%, #ffe4e1 100%);
+  }
+
   body {
-    background-color: transparent;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    font-family: 'Quicksand', 'M PLUS Rounded 1c', sans-serif;
+    background-color: transparent;
+    font-family: 'Quicksand', 'Montserrat', sans-serif;
   }
-  .widget {
-    background: linear-gradient(135deg, #fff5f7 0%, #ffe4e1 100%);
-    border: 3px solid #ffcad4;
-    border-radius: 30px;
-    padding: 30px;
-    width: 200px;
+
+  /* カード本体：少し浮かび上がるような立体感 */
+  .card {
+    background: var(--bg-grad);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 40px;
+    padding: 35px 45px;
     text-align: center;
-    box-shadow: 0 10px 20px rgba(255, 182, 193, 0.4);
-    transition: transform 0.3s ease;
+    box-shadow: 
+      20px 20px 60px #e6d5d8, 
+      -20px -20px 60px #ffffff; /* ニューモーフィズム風の柔らかい影 */
+    position: relative;
+    overflow: hidden;
   }
-  .widget:hover {
-    transform: translateY(-5px);
+
+  /* 背景のアクセント丸（ふわふわ感を演出） */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 182, 193, 0.2);
+    border-radius: 50%;
+    filter: blur(10px);
   }
+
   .month-year {
-    color: #ff8fa3;
-    font-size: 1rem;
+    color: var(--accent-pink);
+    font-size: 0.9rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
     margin-bottom: 5px;
+    font-family: 'Montserrat', sans-serif;
   }
+
   .day {
-    color: #5d5d5d;
-    font-size: 4.5rem;
+    color: var(--text-color);
+    font-size: 5rem; /* 大きくして見やすく */
     font-weight: 700;
     line-height: 1;
     margin: 10px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
   }
+
   .weekday {
+    color: #ffffff;
+    background: var(--main-pink);
+    padding: 6px 20px;
+    border-radius: 100px;
+    font-size: 1rem;
+    font-weight: 500;
     display: inline-block;
-    background-color: #ffb3c1;
-    color: white;
-    padding: 5px 15px;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(255, 183, 197, 0.4);
   }
 </style>
 </head>
 <body>
-  <div class="widget">
-    <div class="month-year" id="month-year"></div>
-    <div class="day" id="day"></div>
-    <div class="weekday" id="weekday"></div>
+  <div class="card">
+    <div id="m-y" class="month-year"></div>
+    <div id="d" class="day"></div>
+    <div id="w" class="weekday"></div>
   </div>
 
   <script>
-    function updateDate() {
-      const now = new Date();
-      const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-      const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+    function update() {
+      const n = new Date();
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const weeks = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
       
-      document.getElementById('month-year').innerText = `${months[now.getMonth()]} ${now.getFullYear()}`;
-      document.getElementById('day').innerText = now.getDate();
-      document.getElementById('weekday').innerText = days[now.getDay()];
+      document.getElementById('m-y').innerText = `${months[n.getMonth()].toUpperCase()} ${n.getFullYear()}`;
+      document.getElementById('d').innerText = n.getDate();
+      document.getElementById('w').innerText = weeks[n.getDay()];
     }
-    updateDate();
+    update();
+    setInterval(update, 60000); // 1分ごとに更新
   </script>
 </body>
 </html>
