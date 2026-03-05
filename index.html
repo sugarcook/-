@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
   :root {
     --main-pink: #ffb7c5;    /* サクラピンク */
@@ -19,10 +19,10 @@
     align-items: center;
     height: 100vh;
     background-color: transparent;
-    font-family: 'Quicksand', 'Montserrat', sans-serif;
+    font-family: 'Pinyon Script', cursive; /* 筆記体フォントを適用 */
   }
 
-  /* カード本体：少し浮かび上がるような立体感 */
+  /* カード本体：立体感と背景デザイン */
   .card {
     background: var(--bg-grad);
     border: 1px solid rgba(255, 255, 255, 0.6);
@@ -36,32 +36,41 @@
     overflow: hidden;
   }
 
-  /* 背景のアクセント丸（ふわふわ感を演出） */
+  /* 背景の飛行機と飛行機雲（白色のシルエット） */
   .card::before {
     content: '';
     position: absolute;
-    top: -20px;
-    right: -20px;
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 182, 193, 0.2);
-    border-radius: 50%;
-    filter: blur(10px);
+    bottom: -10px;
+    right: -10px;
+    width: 150px;
+    height: 150px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M90 40 L70 45 L50 20 L40 25 L55 48 L20 55 L10 45 L5 50 L15 60 L10 70 L20 65 L40 70 L50 65 L85 75 Z" fill="white" opacity="0.4"/></svg>'),
+                      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10 50 Q 50 20, 90 50" stroke="white" stroke-width="2" fill="none" opacity="0.4"/></svg>');
+    background-size: 80% 80%, 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center bottom, center top;
+    transform: rotate(-15deg);
+    pointer-events: none; /* テキストの選択を邪魔しない */
+  }
+
+  /* テキスト全体の配置調整 */
+  .text-container {
+    position: relative;
+    z-index: 1; /* 背景デザインより前に配置 */
   }
 
   .month-year {
     color: var(--accent-pink);
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+    font-size: 1.2rem; /* フォントに合わせて少し大きく */
+    font-weight: 400; /* 筆記体の細さを活かす */
+    letter-spacing: 0.1em;
     margin-bottom: 5px;
-    font-family: 'Montserrat', sans-serif;
   }
 
   .day {
     color: var(--text-color);
-    font-size: 5rem; /* 大きくして見やすく */
-    font-weight: 700;
+    font-size: 6rem; /* さらに大きく */
+    font-weight: 400; /* 筆記体は太くしない */
     line-height: 1;
     margin: 10px 0;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
@@ -70,10 +79,10 @@
   .weekday {
     color: #ffffff;
     background: var(--main-pink);
-    padding: 6px 20px;
+    padding: 8px 25px; /* 余白を少し広く */
     border-radius: 100px;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 1.1rem; /* 少し大きく */
+    font-weight: 400;
     display: inline-block;
     box-shadow: 0 4px 10px rgba(255, 183, 197, 0.4);
   }
@@ -81,9 +90,11 @@
 </head>
 <body>
   <div class="card">
-    <div id="m-y" class="month-year"></div>
-    <div id="d" class="day"></div>
-    <div id="w" class="weekday"></div>
+    <div class="text-container">
+      <div id="m-y" class="month-year"></div>
+      <div id="d" class="day"></div>
+      <div id="w" class="weekday"></div>
+    </div>
   </div>
 
   <script>
@@ -92,7 +103,7 @@
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       const weeks = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
       
-      document.getElementById('m-y').innerText = `${months[n.getMonth()].toUpperCase()} ${n.getFullYear()}`;
+      document.getElementById('m-y').innerText = `${months[n.getMonth()]} ${n.getFullYear()}`; // 大文字化はやめて筆記体の美しさを優先
       document.getElementById('d').innerText = n.getDate();
       document.getElementById('w').innerText = weeks[n.getDay()];
     }
